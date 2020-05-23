@@ -1,21 +1,55 @@
 package main
 
+import "strings"
+
 //Item format of item
 type Item struct {
 	name            string
 	sellIn, quality int
 }
 
-//NewUpdateQuality to include Conjured items
-func NewUpdateQuality(items []*Item) {
+//UpdateQuality to include Conjured items
+func UpdateQuality(items []*Item) {
 	for key, item := range items {
-		key = key
-		item = item
+		step := -1
+		coef := 1
+		if item.sellIn <= 0 {
+			coef = 2
+		}
+		if strings.HasPrefix(item.name, "Backstage passes") {
+			if item.sellIn <= 0 {
+				items[key].quality = 0
+				coef = 0
+			} else {
+				coef = 1
+				step = 1
+				if item.sellIn <= 10 {
+					step++
+				}
+				if item.sellIn <= 5 {
+					step++
+				}
+			}
+
+		} else if strings.HasPrefix(item.name, "Aged Brie") {
+			step = 1
+		} else if strings.HasPrefix(item.name, "Sulfuras") {
+			continue
+		} else if strings.HasPrefix(item.name, "Conjured") {
+			coef = coef * 2
+		}
+		items[key].quality += step * coef
+		if items[key].quality > 50 {
+			items[key].quality = 50
+		} else if items[key].quality < 0 {
+			items[key].quality = 0
+		}
+		items[key].sellIn += -1
 	}
 }
 
-//UpdateQuality to update the quality of each item over one day
-func UpdateQuality(items []*Item) {
+//OldUpdateQuality to update the quality of each item over one day
+func OldUpdateQuality(items []*Item) {
 	for i := 0; i < len(items); i++ {
 
 		if items[i].name != "Aged Brie" && items[i].name != "Backstage passes to a TAFKAL80ETC concert" {

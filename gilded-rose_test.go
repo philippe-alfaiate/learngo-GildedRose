@@ -29,51 +29,45 @@ func Test_OldAgainstNewUpdate(t *testing.T) {
 		&Item{"Backstage passes to a TAFKAL80ETC concert", 5, 49},
 	}
 
-	day := 3
+	day := 155
 	for i := 0; i < day; i++ {
-		UpdateQuality(itemOld)
-		NewUpdateQuality(itemNew)
+		OldUpdateQuality(itemOld)
+		UpdateQuality(itemNew)
+
+		res := ""
+
+		for i := 0; i < len(itemOld); i++ {
+			res = ""
+			tmp := ">"
+			err := 0
+			if itemOld[i].name != itemNew[i].name {
+				tmp = "!"
+				err++
+			}
+			res += fmt.Sprintf("Name [%s] %s [%s]", itemOld[i].name, tmp, itemNew[i].name)
+			tmp = ">"
+			if itemOld[i].sellIn != itemNew[i].sellIn {
+				tmp = "!"
+				err++
+			}
+			res += fmt.Sprintf(", sellIn [%d] %s [%d], ", itemOld[i].sellIn, tmp, itemNew[i].sellIn)
+			tmp = ">"
+			if itemOld[i].quality != itemNew[i].quality {
+				tmp = "!"
+				err++
+			}
+
+			res += fmt.Sprintf(", quality [%d] %s [%d] %d/3", itemOld[i].quality, tmp, itemNew[i].quality, 3-err)
+
+			pass := "pass"
+			if err != 0 {
+				pass = "fail"
+				t.Errorf("%s %s", res, pass)
+			} else {
+				//println(res, pass)
+			}
+
+		}
 	}
-
-	res := ""
-
-	for i := 0; i < len(itemOld); i++ {
-		res = ""
-		tmp := ">"
-		err := 0
-		if itemOld[i].name != itemNew[i].name {
-			tmp = "!"
-			err++
-		}
-		res += fmt.Sprintf("Name [%s] %s [%s]", itemOld[i].name, tmp, itemNew[i].name)
-		tmp = ">"
-		if itemOld[i].sellIn != itemNew[i].sellIn {
-			tmp = "!"
-			err++
-		}
-		res += fmt.Sprintf(", sellIn [%d] %s [%d], ", itemOld[i].sellIn, tmp, itemNew[i].sellIn)
-		tmp = ">"
-		if itemOld[i].quality != itemNew[i].quality {
-			tmp = "!"
-			err++
-		}
-
-		res += fmt.Sprintf(", quality [%d] %s [%d] %d/3", itemOld[i].quality, tmp, itemNew[i].quality, 3-err)
-
-		pass := "pass"
-		if err != 0 {
-			pass = "fail"
-			t.Errorf("%s %s", res, pass)
-		} else {
-			println(res, pass)
-		}
-
-	}
-
-	/*
-		if items[0].name != "fixme" {
-			t.Errorf("Name: Expected %s but got %s ", "fixme", items[0].name)
-		}
-	*/
 
 }
