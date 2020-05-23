@@ -10,7 +10,7 @@ type Item struct {
 
 //UpdateQuality to include Conjured items
 func UpdateQuality(items []*Item) {
-	for key, item := range items {
+	for _, item := range items {
 		step := -1
 		coef := 1
 		if item.sellIn <= 0 {
@@ -18,7 +18,7 @@ func UpdateQuality(items []*Item) {
 		}
 		if strings.HasPrefix(item.name, "Backstage passes") {
 			if item.sellIn <= 0 {
-				items[key].quality = 0
+				item.quality = 0
 				coef = 0
 			} else {
 				coef = 1
@@ -38,13 +38,13 @@ func UpdateQuality(items []*Item) {
 		} else if strings.HasPrefix(item.name, "Conjured") {
 			coef *= 2
 		}
-		items[key].quality += step * coef
-		if items[key].quality > 50 {
-			items[key].quality = 50
-		} else if items[key].quality < 0 {
-			items[key].quality = 0
+		item.quality += step * coef
+		if item.quality > 50 {
+			item.quality = 50
+		} else if item.quality < 0 {
+			item.quality = 0
 		}
-		items[key].sellIn += -1
+		item.sellIn += -1
 	}
 }
 
