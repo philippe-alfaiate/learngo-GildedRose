@@ -36,7 +36,7 @@ func UpdateQuality(items []*Item) {
 		} else if strings.HasPrefix(item.name, "Sulfuras") {
 			continue
 		} else if strings.HasPrefix(item.name, "Conjured") {
-			coef = coef * 2
+			coef *= 2
 		}
 		items[key].quality += step * coef
 		if items[key].quality > 50 {
