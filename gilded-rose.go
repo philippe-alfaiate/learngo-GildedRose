@@ -1,10 +1,20 @@
 package main
 
+//Item format of item
 type Item struct {
 	name            string
 	sellIn, quality int
 }
 
+//NewUpdateQuality to include Conjured items
+func NewUpdateQuality(items []*Item) {
+	for key, item := range items {
+		key = key
+		item = item
+	}
+}
+
+//UpdateQuality to update the quality of each item over one day
 func UpdateQuality(items []*Item) {
 	for i := 0; i < len(items); i++ {
 
